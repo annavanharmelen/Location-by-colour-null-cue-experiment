@@ -2,7 +2,7 @@
 
 # ***[work in progress]***
 
-A temporal visuo-motor working memory task, designed to measure gaze bias during a non-informative retro cue, programmed in Python.
+A temporal visuo-motor working memory task with a 2-by-2 design (location-by-colour), designed to measure gaze bias during an uninformative retro cue, programmed in Python.
 
 ## Author
 Made by Anna van Harmelen in 2024, based on previous code by Anna van Harmelen, see: [Null-cue-gaze-bias-experiment-main](https://github.com/annavanharmelen/Null-cue-gaze-bias-experiment).
