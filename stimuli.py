@@ -9,6 +9,7 @@ made by Anna van Harmelen, 2023
 from psychopy import visual
 
 ECCENTRICITY = 6
+DOT_SIZE = 0.1  # diameter of circle
 BAR_SIZE = [0.6, 4]  # width, height
 CAPTURE_CUE_SIZE = 0.7 # diameter of circle
 
