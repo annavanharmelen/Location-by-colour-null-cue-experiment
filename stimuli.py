@@ -12,27 +12,20 @@ ECCENTRICITY = 6
 BAR_SIZE = [0.6, 4]  # width, height
 CAPTURE_CUE_SIZE = 0.7 # diameter of circle
 
-def create_fixation_cross(settings, colour="#eaeaea"):
-    # Determine size of fixation cross
-    fixation_size = settings["deg2pix"](0.22)
+def create_fixation_dot(settings, colour="#eaeaea"):
+    # Determine size of fixation dot
+    fixation_size = settings["deg2pix"](DOT_SIZE)
 
-    # Make fixation cross
-    fixation_cross = visual.ShapeStim(
+    # Make fixation dot
+    fixation_dot = visual.Circle(
         win=settings["window"],
-        vertices=(
-            (0, -fixation_size),
-            (0, fixation_size),
-            (0, 0),
-            (-fixation_size, 0),
-            (fixation_size, 0),
-        ),
-        lineWidth=settings["deg2pix"](0.06),
-        lineColor=colour,
-        closeShape=False,
         units="pix",
+        radius=fixation_size,
+        pos=(0, 0),
+        fillColor=colour,
     )
 
-    fixation_cross.draw()
+    fixation_dot.draw()
 
 
 def make_one_bar(orientation, colour, position, settings):
@@ -61,7 +54,7 @@ def make_one_bar(orientation, colour, position, settings):
 
 
 def create_stimuli_frame(left_orientation, right_orientation, colours, settings):
-    create_fixation_cross(settings)
+    create_fixation_dot(settings)
     make_one_bar(left_orientation, colours[0], "left", settings).draw()
     make_one_bar(right_orientation, colours[1], "right", settings).draw()
 
@@ -76,4 +69,4 @@ def create_capture_cue_frame(colour, settings):
     )
 
     capture_cue.draw()
-    create_fixation_cross(settings)
+    create_fixation_dot(settings)
