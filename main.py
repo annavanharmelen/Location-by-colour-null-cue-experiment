@@ -83,12 +83,17 @@ def main():
 
     # Start experiment
     try:
-        for block in range(2 if testing else N_BLOCKS):
+        # Generate pseudo-random order of blocks
+        blocks = create_blocks(N_BLOCKS)
+
+        for block_nr, block_type in (
+            ["colour_probe", "location_probe"] if testing else blocks
+        ):
             # Pseudo-randomly create conditions and target locations (so they're weighted)
-            block_info = create_block(8 if testing else TRIALS_PER_BLOCK)
+            trials_in_block = create_trial_list(8 if testing else TRIALS_PER_BLOCK)
 
             # Run trials per pseudo-randomly created info
-            for target_bar, congruency, cue_form in block_info:
+            for target_bar, congruency, cue_form in trials_in_block:
                 current_trial += 1
                 start_time = time()
 
@@ -99,6 +104,7 @@ def main():
                 # Generate trial
                 report: dict = single_trial(
                     **stimuli_characteristics,
+                    probe_form=block_type,
                     settings=settings,
                     testing=testing,
                     eyetracker=None if testing else eyelinker,
@@ -109,7 +115,8 @@ def main():
                 data.append(
                     {
                         "trial_number": current_trial,
-                        "block": block + 1,
+                        "block_type": block_type,
+                        "block": block_nr,
                         "start_time": str(
                             dt.timedelta(seconds=(start_time - start_of_experiment))
                         ),
@@ -124,14 +131,21 @@ def main():
             # Break after end of block, unless it's the last block.
             # Experimenter can re-calibrate the eyetracker by pressing 'c' here.
             calibrated = True
-            if block + 1 == N_BLOCKS // 2:
+            if block_nr == N_BLOCKS // 2:
                 while calibrated:
-                    calibrated = long_break(N_BLOCKS, settings, eyetracker=None if testing else eyelinker)
+                    calibrated = long_break(
+                        N_BLOCKS, settings, eyetracker=None if testing else eyelinker
+                    )
                 if not testing:
                     eyelinker.start()
-            elif block + 1 < N_BLOCKS:
+            elif block_nr < N_BLOCKS:
                 while calibrated:
-                    calibrated = block_break(block + 1, N_BLOCKS, settings, eyetracker=None if testing else eyelinker)
+                    calibrated = block_break(
+                        block_nr,
+                        N_BLOCKS,
+                        settings,
+                        eyetracker=None if testing else eyelinker,
+                    )
 
         finished_early = False
 
