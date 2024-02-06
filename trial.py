@@ -24,7 +24,8 @@ COLOURS = [
     [(rgb_value / 128 - 1) for rgb_value in rgb_triplet] for rgb_triplet in COLOURS
 ]
 
-def generate_stimuli_characteristics(condition, target_bar):
+
+def generate_stimuli_characteristics(target_bar, congruency, cue_form):
     stimuli_colours = random.sample(COLOURS, 2)
 
     orientations = [
@@ -39,15 +40,19 @@ def generate_stimuli_characteristics(condition, target_bar):
         distractor_colour, target_colour = stimuli_colours
         target_orientation = orientations[1]
 
-    if condition == "congruent":
+    if congruency == "congruent":
         capture_colour = target_colour
-    elif condition == "incongruent":
+        capture_location = target_bar
+    elif congruency == "incongruent":
         capture_colour = distractor_colour
+        capture_location = "right" if target_bar == "left" else "left"
 
     return {
         "stimuli_colours": stimuli_colours,
+        "cue_form": cue_form,
         "capture_colour": capture_colour,
-        "trial_condition": condition,
+        "capture_location": capture_location,
+        "trial_condition": congruency,
         "left_orientation": orientations[0],
         "right_orientation": orientations[1],
         "target_bar": target_bar,
@@ -74,7 +79,9 @@ def single_trial(
     target_colour,
     target_orientation,
     stimuli_colours,
+    cue_form,
     capture_colour,
+    capture_location,
     trial_condition,
     settings,
     testing,
@@ -96,7 +103,12 @@ def single_trial(
         (0.75, lambda: create_fixation_dot(settings), None),
         (
             0.25,
-            lambda: create_capture_cue_frame(capture_colour, settings),
+            lambda: create_capture_cue_frame(
+                cue_form,
+                settings,
+                capture_colour if cue_form == "colour" else None,
+                capture_location if cue_form == "location" else None,
+            ),
             "capture_cue_onset",
         ),
         (1.25, lambda: create_fixation_dot(settings), None),
