@@ -10,6 +10,15 @@ from math import atan2, degrees
 import time
 from set_up import get_monitor_and_dir, get_settings
 from trial import generate_stimuli_characteristics, single_trial
+from block import create_blocks
+
+blocks = create_blocks(6)
+print(blocks)
+
+
+# stop here
+import sys
+sys.exit()
 
 monitor, directory = get_monitor_and_dir(True)
 settings = get_settings(monitor, directory)
@@ -25,10 +34,6 @@ report: dict = single_trial(
     testing=True,
     eyetracker=None,
 )
-
-# stop here
-import sys
-sys.exit()
 
 monitor = {
         "resolution": (1920, 1080),  # in pixels
