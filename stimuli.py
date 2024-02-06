@@ -101,3 +101,13 @@ def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
         )
 
     create_fixation_dot(settings)
+def create_probe_cue_frame(probe_form, settings, colour=None, position=None):
+    if probe_form == "colour_probe":
+        create_fixation_dot(settings, colour)
+    elif probe_form == "location_probe":
+        create_location_cue(position, settings)
+        create_fixation_dot(settings)
+    else:
+        raise Exception(
+            f"Expected 'colour_probe' or 'location_probe', but received {probe_form!r}. :("
+        )
