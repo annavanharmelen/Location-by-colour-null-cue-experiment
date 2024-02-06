@@ -106,8 +106,8 @@ def single_trial(
             lambda: create_capture_cue_frame(
                 cue_form,
                 settings,
-                capture_colour if cue_form == "colour" else None,
-                capture_location if cue_form == "location" else None,
+                capture_colour if cue_form == "colour_cue" else None,
+                capture_location if cue_form == "location_cue" else None,
             ),
             "capture_cue_onset",
         ),

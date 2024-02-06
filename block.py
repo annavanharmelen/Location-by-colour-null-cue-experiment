@@ -25,6 +25,7 @@ def create_blocks(n_blocks):
     return blocks
 
 
+def create_trial_list(n_trials):
     if n_trials % 8 != 0:
         raise Exception("Expected number of trials to be divisible by 8.")
 
@@ -35,9 +36,9 @@ def create_blocks(n_blocks):
     # that co-occur equally with the target locations
     congruencies = 2 * (n_trials // 4 * ["congruent"] + n_trials // 4 * ["incongruent"])
 
-    # Generate equal distribution of cue_forms,
+    # Generate equal distribution of cue forms,
     # that co-occur equally with both target locations and directions
-    cue_forms = 4 * (n_trials // 8 * ["colour"] + n_trials // 8 * ["location"])
+    cue_forms = 4 * (n_trials // 8 * ["colour_cue"] + n_trials // 8 * ["location_cue"])
 
     # Create trial parameters for all trials
     trials = list(zip(locations, congruencies, cue_forms))
