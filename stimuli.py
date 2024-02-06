@@ -70,4 +70,24 @@ def create_colour_cue(colour, settings):
     )
     
     colour_cue.draw()
+
+def create_location_cue(position, settings, colour="#eaeaea"):
+    # Check input
+    if position == "left":
+        pos = (-settings["deg2pix"](ECCENTRICITY), 0)
+    elif position == "right":
+        pos = (settings["deg2pix"](ECCENTRICITY), 0)
+    else:
+        raise Exception(f"Expected 'left' or 'right', but received {position!r}. :(")
+
+    location_cue = visual.Circle(
+        win=settings["window"],
+        units="pix",
+        radius=settings["deg2pix"]((BAR_SIZE[1]) / 2),
+        pos=pos,
+        fillColor=colour,
+    )
+    
+    location_cue.draw()
+
     create_fixation_dot(settings)
