@@ -90,4 +90,12 @@ def create_location_cue(position, settings, colour="#eaeaea"):
     
     location_cue.draw()
 
+def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
+    if cue_form == "colour":
+        create_colour_cue(colour, settings)
+    elif cue_form == "location":
+        create_location_cue(position, settings)
+    else:
+        raise Exception(f"Expected 'colour' or 'location', but received {cue_form!r}. :(")
+    
     create_fixation_dot(settings)
