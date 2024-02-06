@@ -16,7 +16,14 @@ from trial import single_trial, generate_stimuli_characteristics
 from time import time
 from practice import practice
 import datetime as dt
-from block import create_block, block_break, long_break, finish, quick_finish
+from block import (
+    create_blocks,
+    create_trial_list,
+    block_break,
+    long_break,
+    finish,
+    quick_finish,
+)
 
 N_BLOCKS = 16
 TRIALS_PER_BLOCK = 48
@@ -140,7 +147,9 @@ def main():
         )
 
         # Register how many trials this participant has completed
-        new_participants.loc[new_participants.index[-1], "trials_completed"] = str(len(data))
+        new_participants.loc[new_participants.index[-1], "trials_completed"] = str(
+            len(data)
+        )
 
         # Save participant data to existing .csv file
         new_participants.to_csv(
