@@ -81,12 +81,12 @@ def main():
             block_info = create_block(8 if testing else TRIALS_PER_BLOCK)
 
             # Run trials per pseudo-randomly created info
-            for condition, target_bar in block_info:
+            for target_bar, congruency, cue_form in block_info:
                 current_trial += 1
                 start_time = time()
 
                 stimuli_characteristics: dict = generate_stimuli_characteristics(
-                    condition, target_bar
+                    target_bar, congruency, cue_form
                 )
 
                 # Generate trial
