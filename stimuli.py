@@ -60,14 +60,14 @@ def create_stimuli_frame(left_orientation, right_orientation, colours, settings)
     make_one_bar(right_orientation, colours[1], "right", settings).draw()
 
 
-def create_capture_cue_frame(colour, settings):
-    capture_cue = visual.Circle(
+def create_colour_cue(colour, settings):
+    colour_cue = visual.Circle(
         win=settings["window"],
         units="pix",
         radius=settings["deg2pix"](CAPTURE_CUE_SIZE / 2),
         pos=(0, 0),
         fillColor=colour,
     )
-
-    capture_cue.draw()
+    
+    colour_cue.draw()
     create_fixation_dot(settings)
