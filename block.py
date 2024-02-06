@@ -11,12 +11,22 @@ from response import wait_for_key
 
 
 def create_block(n_trials):
-    if n_trials % 6 != 0:
-        raise Exception("Expected number of trials to be divisible by 6.")
+    if n_trials % 8 != 0:
+        raise Exception("Expected number of trials to be divisible by 8.")
 
-    trials = (n_trials // 6) * list(
-        zip(2 * ["neutral", "congruent", "incongruent"], 3 * ["left", "right"])
-    )
+    # Generate equal distribution of target locations
+    locations = n_trials // 2 * ["left"] + n_trials // 2 * ["right"]
+
+    # Generate equal distribution of congruencies,
+    # that co-occur equally with the target locations
+    congruencies = 2 * (n_trials // 4 * ["congruent"] + n_trials // 4 * ["incongruent"])
+
+    # Generate equal distribution of cue_forms,
+    # that co-occur equally with both target locations and directions
+    cue_forms = 4 * (n_trials // 8 * ["colour"] + n_trials // 8 * ["location"])
+
+    # Create trial parameters for all trials
+    trials = list(zip(locations, congruencies, cue_forms))
     random.shuffle(trials)
 
     return trials
