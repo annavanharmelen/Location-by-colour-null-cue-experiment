@@ -25,7 +25,7 @@ COLOURS = [
 ]
 
 def generate_stimuli_characteristics(condition, target_bar):
-    neutral_colour, *stimuli_colours = random.sample(COLOURS, 3)
+    stimuli_colours = random.sample(COLOURS, 2)
 
     orientations = [
         random.choice([-1, 1]) * random.randint(5, 85),
@@ -43,8 +43,6 @@ def generate_stimuli_characteristics(condition, target_bar):
         capture_colour = target_colour
     elif condition == "incongruent":
         capture_colour = distractor_colour
-    elif condition == "neutral":
-        capture_colour = neutral_colour
 
     return {
         "stimuli_colours": stimuli_colours,
