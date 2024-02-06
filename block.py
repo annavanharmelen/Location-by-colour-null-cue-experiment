@@ -5,12 +5,26 @@ To run the 'null-cue gaze bias' experiment, see main.py.
 
 made by Anna van Harmelen, 2023
 """
+
 import random
 from trial import show_text
 from response import wait_for_key
 
 
-def create_block(n_trials):
+def create_blocks(n_blocks):
+    if n_blocks % 2 != 0:
+        raise Exception("Expected number of trials to be divisible by 2.")
+
+    # Generate equal distribution of probe forms over the blocks, but randomly order them
+    block_types = n_blocks // 2 * ["colour_probe"] + n_blocks // 2 * ["location_probe"]
+    random.shuffle(block_types)
+
+    # Save list of sets of block numbers (in order) + block types (shuffled)
+    blocks = list(zip(range(1, n_blocks + 1), block_types))
+
+    return blocks
+
+
     if n_trials % 8 != 0:
         raise Exception("Expected number of trials to be divisible by 8.")
 
