@@ -11,7 +11,8 @@ from psychopy import visual
 ECCENTRICITY = 6
 DOT_SIZE = 0.1  # diameter of circle
 BAR_SIZE = [0.6, 4]  # width, height
-CAPTURE_CUE_SIZE = 0.7 # diameter of circle
+CAPTURE_CUE_SIZE = 0.7  # diameter of circle
+
 
 def create_fixation_dot(settings, colour="#eaeaea"):
     # Determine size of fixation dot
@@ -68,8 +69,9 @@ def create_colour_cue(colour, settings):
         pos=(0, 0),
         fillColor=colour,
     )
-    
+
     colour_cue.draw()
+
 
 def create_location_cue(position, settings, colour="#eaeaea"):
     # Check input
@@ -87,8 +89,9 @@ def create_location_cue(position, settings, colour="#eaeaea"):
         pos=pos,
         fillColor=colour,
     )
-    
+
     location_cue.draw()
+
 
 def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
     if cue_form == "colour_cue":
@@ -101,6 +104,8 @@ def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
         )
 
     create_fixation_dot(settings)
+
+
 def create_probe_cue_frame(probe_form, settings, colour=None, position=None):
     if probe_form == "colour_probe":
         create_fixation_dot(settings, colour)
