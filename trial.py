@@ -15,6 +15,7 @@ from stimuli import (
     create_fixation_dot,
     create_capture_cue_frame,
     create_stimuli_frame,
+    create_probe_cue_frame
 )
 from eyetracker import get_trigger
 import random
@@ -83,6 +84,7 @@ def single_trial(
     capture_colour,
     capture_location,
     trial_condition,
+    probe_form,
     settings,
     testing,
     eyetracker=None,
@@ -112,7 +114,16 @@ def single_trial(
             "capture_cue_onset",
         ),
         (1.25, lambda: create_fixation_dot(settings), None),
-        (None, lambda: create_fixation_dot(settings, target_colour), None),
+        (
+            None,
+            lambda: create_probe_cue_frame(
+                probe_form,
+                settings,
+                target_colour if cue_form == "colour_cue" else None,
+                target_bar if cue_form == "location_cue" else None,
+            ),
+            None,
+        ),
     ]
 
     # !!! The timing you pass to do_while_showing is the timing for the previously drawn screen. !!!
