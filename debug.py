@@ -9,17 +9,22 @@ from psychopy import visual
 from math import atan2, degrees
 import time
 from set_up import get_monitor_and_dir, get_settings
-from stimuli import create_capture_cue_frame
+from trial import generate_stimuli_characteristics, single_trial
 
 monitor, directory = get_monitor_and_dir(True)
 settings = get_settings(monitor, directory)
 window = settings["window"]
 deg2pix = settings["deg2pix"]
 
-create_capture_cue_frame("location", settings, position="left")
+stimuli_characteristics: dict = generate_stimuli_characteristics("right", "incongruent", "location")
 
-window.flip()
-time.sleep(2)
+# Generate trial
+report: dict = single_trial(
+    **stimuli_characteristics,
+    settings=settings,
+    testing=True,
+    eyetracker=None,
+)
 
 # stop here
 import sys
