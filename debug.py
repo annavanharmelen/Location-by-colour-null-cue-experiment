@@ -9,24 +9,15 @@ from psychopy import visual
 from math import atan2, degrees
 import time
 from set_up import get_monitor_and_dir, get_settings
+from stimuli import create_capture_cue_frame
 
 monitor, directory = get_monitor_and_dir(True)
 settings = get_settings(monitor, directory)
 window = settings["window"]
 deg2pix = settings["deg2pix"]
 
-capture_cue = visual.Rect(
-    win=window,
-    units='pix',
-    width=deg2pix(2),
-    height=deg2pix(2),
-    pos=(0,0),
-    lineColor = 'red',
-    lineWidth = deg2pix(0.1),
-    fillColor = None,
-)
+create_capture_cue_frame("location", settings, position="left")
 
-capture_cue.draw()
 window.flip()
 time.sleep(2)
 
