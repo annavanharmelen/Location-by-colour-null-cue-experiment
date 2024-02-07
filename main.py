@@ -87,7 +87,7 @@ def main():
         blocks = create_blocks(N_BLOCKS)
 
         for block_nr, block_type in (
-            ["colour_probe", "location_probe"] if testing else blocks
+            [(1, "colour_probe"), (2, "location_probe")] if testing else blocks
         ):
             # Pseudo-randomly create conditions and target locations (so they're weighted)
             trials_in_block = create_trial_list(8 if testing else TRIALS_PER_BLOCK)
@@ -182,4 +182,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
