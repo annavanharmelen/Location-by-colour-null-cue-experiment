@@ -146,13 +146,14 @@ def single_trial(
     settings["window"].flip()
 
     response = get_response(
+        probe_form,
         target_orientation,
         target_colour,
+        trial_condition,
+        target_bar,
         settings,
         testing,
         eyetracker,
-        trial_condition,
-        target_bar,
     )
 
     if not testing:
