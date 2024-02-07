@@ -18,11 +18,8 @@ from psychopy.hardware.keyboard import Keyboard
 from time import sleep
 import random
 
-# 1. Practice response dials using a block with a specific orientation
-# 2. Practice full trials
 
-
-def practice(testing, settings):
+def practice(settings):
     # Show explanation
     show_text(
         f"Welcome to the practice trials. You will practice each part until you press Q. \
@@ -36,23 +33,23 @@ def practice(testing, settings):
     try:
         while True:
             target_bar = random.choice(["left", "right"])
-            condition = "neutral"
-            target = generate_stimuli_characteristics(condition, target_bar)
-            target_orientation = target["target_orientation"]
-            target_colour = None
+            congruency = "congruent"
+            cue_form = ""
+            target = generate_stimuli_characteristics(target_bar, congruency, cue_form)
 
             practice_bar = make_one_bar(
-                target_orientation, "#eaeaea", "middle", settings
+                target["target_orientation"], "#eaeaea", "middle", settings
             )
 
             report: dict = get_response(
-                target_orientation,
-                target_colour,
-                settings,
-                testing,
+                "colour_probe",
+                target["target_orientation"],
                 None,
                 1,
                 target_bar,
+                settings,
+                True,
+                None,
                 [practice_bar],
             )
 
@@ -67,7 +64,36 @@ def practice(testing, settings):
 
     except KeyboardInterrupt:
         show_text(
-            "You decided to stop practising the response dial."
+            "You decided to stop practising the response dial. "
+            "Press SPACE to start practicing full trials."
+            "\nRemember to press Q to stop practising these trials and move on to the final practice part.",
+            settings["window"],
+        )
+        settings["window"].flip()
+        wait_for_key(["space"], settings["keyboard"])
+
+    # Decide which type of block to practice first
+    blocks = ["colour_probe", "location_probe"]
+    random.shuffle(blocks)
+
+    # Practice first probe-type trials until user chooses to stop
+    try:
+        while True:
+            target_bar = random.choice(["left", "right"])
+            congruency = random.choice(["congruent", "incongruent"])
+            cue_form = random.choice(["colour_cue", "location_cue"])
+
+            stimulus = generate_stimuli_characteristics(
+                target_bar, congruency, cue_form
+            )
+
+            report: dict = single_trial(
+                **stimulus, probe_form=blocks[0], settings=settings, testing=True
+            )
+
+    except KeyboardInterrupt:
+        show_text(
+            "You decided to stop practising the response dial. "
             "Press SPACE to start practicing full trials."
             "\nRemember to press Q to stop practising these trials once you feel comfortable starting the real experiment.",
             settings["window"],
@@ -75,15 +101,22 @@ def practice(testing, settings):
         settings["window"].flip()
         wait_for_key(["space"], settings["keyboard"])
 
-    # Practice trials until user chooses to stop
+    wait_for_key(["space"], settings["keyboard"])
+
+    # Practice second probe-type trials until user chooses to stop
     try:
         while True:
             target_bar = random.choice(["left", "right"])
-            condition = random.choice(["congruent", "incongruent", "neutral"])
+            congruency = random.choice(["congruent", "incongruent"])
+            cue_form = random.choice(["colour_cue", "location_cue"])
 
-            stimulus = generate_stimuli_characteristics(condition, target_bar)
+            stimulus = generate_stimuli_characteristics(
+                target_bar, congruency, cue_form
+            )
 
-            report: dict = single_trial(**stimulus, settings=settings, testing=True)
+            report: dict = single_trial(
+                **stimulus, probe_form=blocks[1], settings=settings, testing=True
+            )
 
     except KeyboardInterrupt:
         show_text(
