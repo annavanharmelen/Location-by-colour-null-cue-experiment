@@ -150,10 +150,9 @@ def get_response(
     # - the participant released the rotation key
     # - a second passed
 
-    if probe_form == "colour":
-        dial_circle, top_dial, bottom_dial = make_dial(settings)
-    elif probe_form == "location":
-        dial_circle, top_dial, bottom_dial = make_dial(settings, target_bar)
+    dial_circle, top_dial, bottom_dial = make_dial(
+        settings, target_bar if probe_form == "location_probe" else None
+    )
 
     if not testing and eyetracker:
         trigger = get_trigger("response_onset", trial_condition, target_bar)
@@ -173,7 +172,7 @@ def get_response(
         bottom_dial.draw()
         (
             create_fixation_dot(settings, target_colour)
-            if probe_form == "colour"
+            if probe_form == "colour_probe"
             else create_fixation_dot(settings)
         )
 
