@@ -14,16 +14,18 @@ from time import time
 from eyetracker import get_trigger
 
 RESPONSE_DIAL_SIZE = 2
+RESPONSE_DIAL_ECCENTRICITY = 6
 
 
-def turn_handle(pos, dial_step_size):
+def turn_handle(pos, origin, dial_step_size):
+    x0, y0 = origin
     x, y = pos
+
     pos = (
-        x * cos(dial_step_size) + y * sin(dial_step_size),
-        -x * sin(dial_step_size) + y * cos(dial_step_size),
+        x0 + (x - x0) * cos(dial_step_size) + (y - y0) * sin(dial_step_size),
+        y0 - (x - x0) * sin(dial_step_size) + (y - y0) * cos(dial_step_size),
     )
 
-    # centre, distance, rad
     return pos
 
 
@@ -80,18 +82,25 @@ def make_circle(rad, settings, pos=(0, 0), handle=False):
     return circle
 
 
-def make_dial(settings):
-    dial_circle = make_circle(RESPONSE_DIAL_SIZE, settings)
+def make_dial(settings, position=[]):
+    if position == "left":
+        pos = (-RESPONSE_DIAL_ECCENTRICITY, 0)
+    elif position == "right":
+        pos = (RESPONSE_DIAL_ECCENTRICITY, 0)
+    else:
+        pos = (0, 0)
+
+    dial_circle = make_circle(RESPONSE_DIAL_SIZE, settings, pos)
     top_dial = make_circle(
         RESPONSE_DIAL_SIZE / 15,
         settings,
-        pos=(0, RESPONSE_DIAL_SIZE),
+        pos=(pos[0], pos[1] + RESPONSE_DIAL_SIZE),
         handle=True,
     )
     bottom_dial = make_circle(
         RESPONSE_DIAL_SIZE / 15,
         settings,
-        pos=(0, -RESPONSE_DIAL_SIZE),
+        pos=(pos[0], pos[1] - RESPONSE_DIAL_SIZE),
         handle=True,
     )
 
@@ -99,13 +108,14 @@ def make_dial(settings):
 
 
 def get_response(
+    probe_form,
     target_orientation,
     target_colour,
+    trial_condition,
+    target_bar,
     settings,
     testing,
     eyetracker,
-    trial_condition,
-    target_bar,
     additional_objects=[],
 ):
     keyboard: Keyboard = settings["keyboard"]
@@ -140,15 +150,18 @@ def get_response(
     # - the participant released the rotation key
     # - a second passed
 
-    dial_circle, top_dial, bottom_dial = make_dial(settings)
+    if probe_form == "colour":
+        dial_circle, top_dial, bottom_dial = make_dial(settings)
+    elif probe_form == "location":
+        dial_circle, top_dial, bottom_dial = make_dial(settings, target_bar)
 
     if not testing and eyetracker:
         trigger = get_trigger("response_onset", trial_condition, target_bar)
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     while not keyboard.getKeys(keyList=[key]) and turns < settings["monitor"]["Hz"]:
-        top_dial.pos = turn_handle(top_dial.pos, rad)
-        bottom_dial.pos = turn_handle(bottom_dial.pos, rad)
+        top_dial.pos = turn_handle(top_dial.pos, dial_circle.pos, rad)
+        bottom_dial.pos = turn_handle(bottom_dial.pos, dial_circle.pos, rad)
 
         turns += 1
 
@@ -158,7 +171,11 @@ def get_response(
         dial_circle.draw()
         top_dial.draw()
         bottom_dial.draw()
-        create_fixation_dot(settings, target_colour)
+        (
+            create_fixation_dot(settings, target_colour)
+            if probe_form == "colour"
+            else create_fixation_dot(settings)
+        )
 
         window.flip()
 
