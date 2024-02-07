@@ -15,9 +15,9 @@ from block import create_blocks
 blocks = create_blocks(6)
 print(blocks)
 
-
 # stop here
 import sys
+
 sys.exit()
 
 monitor, directory = get_monitor_and_dir(True)
@@ -25,7 +25,9 @@ settings = get_settings(monitor, directory)
 window = settings["window"]
 deg2pix = settings["deg2pix"]
 
-stimuli_characteristics: dict = generate_stimuli_characteristics("right", "incongruent", "location")
+stimuli_characteristics: dict = generate_stimuli_characteristics(
+    "right", "incongruent", "location"
+)
 
 # Generate trial
 report: dict = single_trial(
@@ -36,11 +38,11 @@ report: dict = single_trial(
 )
 
 monitor = {
-        "resolution": (1920, 1080),  # in pixels
-        "Hz": 239,  # screen refresh rate in Hz
-        "width": 53,  # in cm
-        "distance": 70,  # in cm
-    }
+    "resolution": (1920, 1080),  # in pixels
+    "Hz": 239,  # screen refresh rate in Hz
+    "width": 53,  # in cm
+    "distance": 70,  # in cm
+}
 
 degrees_per_pixel = degrees(atan2(0.5 * monitor["width"], monitor["distance"])) / (
     0.5 * monitor["resolution"][0]
