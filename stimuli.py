@@ -73,7 +73,7 @@ def create_colour_cue(colour, settings):
     colour_cue.draw()
 
 
-def create_location_cue(position, settings, colour="#eaeaea"):
+def create_location_cue(position, capture_or_probe, filled, settings, colour="#eaeaea"):
     # Check input
     if position == "left":
         pos = (-settings["deg2pix"](ECCENTRICITY), 0)
@@ -85,10 +85,24 @@ def create_location_cue(position, settings, colour="#eaeaea"):
     location_cue = visual.Circle(
         win=settings["window"],
         units="pix",
-        radius=settings["deg2pix"]((BAR_SIZE[1]) / 2),
+        radius=(
+            settings["deg2pix"]((BAR_SIZE[1]) / 2)
+            if capture_or_probe == "probe"
+            else settings["deg2pix"](CAPTURE_CUE_SIZE / 2)
+        ),
         pos=pos,
         fillColor=colour,
     )
+
+    # location_cue = visual.Circle(
+    #     win=settings["window"],
+    #     units="pix",
+    #     radius=settings["deg2pix"]((BAR_SIZE[1]) / 2),
+    #     pos=pos,
+    #     lineWidth=10,
+    #     lineColor=None if filled else colour,
+    #     fillColor=colour if filled else None,
+    # )
 
     location_cue.draw()
 
@@ -97,7 +111,7 @@ def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
     if cue_form == "colour_cue":
         create_colour_cue(colour, settings)
     elif cue_form == "location_cue":
-        create_location_cue(position, settings)
+        create_location_cue(position, "capture", False, settings)
     else:
         raise Exception(
             f"Expected 'colour_cue' or 'location_cue', but received {cue_form!r}. :("
@@ -110,7 +124,7 @@ def create_probe_cue_frame(probe_form, settings, colour=None, position=None):
     if probe_form == "colour_probe":
         create_fixation_dot(settings, colour)
     elif probe_form == "location_probe":
-        create_location_cue(position, settings)
+        create_location_cue(position, "probe", True, settings)
         create_fixation_dot(settings)
     else:
         raise Exception(
