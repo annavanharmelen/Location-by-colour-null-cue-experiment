@@ -12,6 +12,14 @@ from set_up import get_monitor_and_dir, get_settings
 from trial import generate_stimuli_characteristics, single_trial
 from block import create_blocks
 from response import get_response
+from eyetracker import get_trigger
+
+print(get_trigger("feedback_onset", "colour_probe", "colour_cue", "incongruent", "right"))
+
+# stop here
+import sys 
+
+sys.exit()
 
 monitor, directory = get_monitor_and_dir(True)
 settings = get_settings(monitor, directory)
@@ -20,11 +28,6 @@ try:
     get_response("colour", 45, "#ff0000", "congruent", "left", settings, True, None)
 except Exception as e:
     print(e)
-
-# stop here
-import sys
-
-sys.exit()
 
 blocks = create_blocks(6)
 print(blocks)
