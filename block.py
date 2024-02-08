@@ -46,6 +46,25 @@ def create_trial_list(n_trials):
 
     return trials
 
+def show_block_type(block_type, settings, eyetracker):
+    show_text(
+        "The next block is a "
+        f"{'colour ' if block_type == 'colour_probe' else 'location '}"
+        "block.",
+        settings["window"],
+    )
+    settings["window"].flip()
+
+    if eyetracker:
+        keys = wait_for_key(["space", "c"], settings["keyboard"])
+        if "c" in keys:
+            eyetracker.calibrate()
+            eyetracker.start()
+            return True
+    else:
+        wait_for_key(["space"], settings["keyboard"])
+
+    return False
 
 def block_break(current_block, n_blocks, settings, eyetracker):
     blocks_left = n_blocks - current_block
