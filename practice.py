@@ -109,8 +109,6 @@ def practice(settings):
         settings["window"].flip()
         wait_for_key(["space"], settings["keyboard"])
 
-    wait_for_key(["space"], settings["keyboard"])
-
     # Practice second probe-type trials until user chooses to stop
     try:
         # Show block type
