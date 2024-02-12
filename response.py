@@ -13,7 +13,7 @@ from stimuli import create_fixation_dot
 from time import time
 from eyetracker import get_trigger
 
-RESPONSE_DIAL_SIZE = 2
+RESPONSE_DIAL_SIZE = 2  # radius of circle
 RESPONSE_DIAL_ECCENTRICITY = 6
 
 
@@ -63,7 +63,7 @@ def evaluate_response(report_orientation, target_orientation, key):
     }
 
 
-def make_circle(rad, settings, pos=(0, 0), handle=False):
+def make_circle(rad, settings, pos=(0, 0), handle=False, colour=None):
     circle = visual.Circle(
         win=settings["window"],
         radius=settings["deg2pix"](rad),
@@ -76,13 +76,13 @@ def make_circle(rad, settings, pos=(0, 0), handle=False):
         circle.lineColor = "#eaeaea"
         circle.fillColor = settings["window"].color
     else:
-        circle.lineColor = "#d4d4d4"
+        circle.lineColor = colour if colour else "#d4d4d4"
         circle.fillColor = None
 
     return circle
 
 
-def make_dial(settings, position=[]):
+def make_dial(settings, position=[], colour=None):
     if position == "left":
         pos = (-RESPONSE_DIAL_ECCENTRICITY, 0)
     elif position == "right":
@@ -90,7 +90,7 @@ def make_dial(settings, position=[]):
     else:
         pos = (0, 0)
 
-    dial_circle = make_circle(RESPONSE_DIAL_SIZE, settings, pos)
+    dial_circle = make_circle(RESPONSE_DIAL_SIZE, settings, pos, colour=colour)
     top_dial = make_circle(
         RESPONSE_DIAL_SIZE / 15,
         settings,
@@ -152,11 +152,15 @@ def get_response(
     # - a second passed
 
     dial_circle, top_dial, bottom_dial = make_dial(
-        settings, target_bar if probe_form == "location_probe" else None
+        settings,
+        target_bar if probe_form == "location_probe" else None,
+        target_colour if probe_form == "colour_probe" else None,
     )
 
     if not testing and eyetracker:
-        trigger = get_trigger("response_onset", probe_form, cue_form, trial_condition, target_bar)
+        trigger = get_trigger(
+            "response_onset", probe_form, cue_form, trial_condition, target_bar
+        )
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     while not keyboard.getKeys(keyList=[key]) and turns < settings["monitor"]["Hz"]:
@@ -171,11 +175,7 @@ def get_response(
         dial_circle.draw()
         top_dial.draw()
         bottom_dial.draw()
-        (
-            create_fixation_dot(settings, target_colour)
-            if probe_form == "colour_probe"
-            else create_fixation_dot(settings)
-        )
+        create_fixation_dot(settings)
 
         window.flip()
 

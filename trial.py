@@ -119,7 +119,7 @@ def single_trial(
             lambda: create_probe_cue_frame(
                 probe_form,
                 settings,
-                target_colour if probe_form == "colour_probe" else None,
+                target_colour if probe_form == "colour_probe" else "#d4d4d4",
                 target_bar if probe_form == "location_probe" else None,
             ),
             None,
