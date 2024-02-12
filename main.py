@@ -69,6 +69,10 @@ def main():
         )
         eyelinker.calibrate()
 
+    # Start recording eyetracker
+    if not testing:
+        eyelinker.start()
+
     # Practice until participant wants to stop
     practice(settings)
 
@@ -77,10 +81,6 @@ def main():
     data = []
     current_trial = 0
     finished_early = True
-
-    # Start recording eyetracker
-    if not testing:
-        eyelinker.start()
 
     # Start experiment
     try:
