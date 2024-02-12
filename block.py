@@ -48,9 +48,9 @@ def create_trial_list(n_trials):
 
 def show_block_type(block_type, settings, eyetracker):
     show_text(
-        "The next block is a "
-        f"{'colour ' if block_type == 'colour_probe' else 'location '}"
-        "block.",
+        "Next: "
+        f"{'colour' if block_type == 'colour_probe' else 'location'}"
+        " block",
         settings["window"],
     )
     settings["window"].flip()
