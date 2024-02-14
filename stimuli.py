@@ -10,8 +10,8 @@ from psychopy import visual
 
 ECCENTRICITY = 6
 DOT_SIZE = 0.1  # radius of inner circle
-TOTAL_DOT_SIZE = 0.4  # radius of outer circle
-BAR_SIZE = [0.6, 4]  # width, height
+TOTAL_DOT_SIZE = 0.35  # radius of outer circle
+BAR_SIZE = [0.7, 4]  # width, height
 PROBE_CUE_SIZE = 2  # radius of circle
 
 
