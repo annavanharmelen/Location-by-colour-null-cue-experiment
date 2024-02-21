@@ -51,6 +51,7 @@ def main():
             "participant_number": int,
             "session_number": int,
             "age": int,
+            "block_order": str,
             "trials_completed": str,
         },
     )

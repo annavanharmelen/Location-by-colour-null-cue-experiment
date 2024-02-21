@@ -27,8 +27,18 @@ def get_participant_details(existing_participants: pd.DataFrame, testing):
     # Insert session number
     session = max(existing_participants.session_number) + 1
 
+    # Determine block order
+    total_orders = 6 * ["CLCL"] + 6 * ["CLLC"] + 6 * ["LCLC"] + 6 * ["LCCL"]
+
+    for item in existing_participants.block_order.tolist():
+        if item in total_orders:
+            total_orders.remove(item)
+
+    random.shuffle(total_orders)
+
+    # Add newly made participant
     new_participant = pd.DataFrame(
-        {"age": [age], "participant_number": [participant], "session_number": [session]}
+        {"age": [age], "participant_number": [participant], "session_number": [session], "block_order": [total_orders[0]]}
     )
     all_participants = pd.concat(
         [existing_participants, new_participant], ignore_index=True
