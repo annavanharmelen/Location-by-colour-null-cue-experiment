@@ -16,6 +16,15 @@ from block import create_blocks
 from response import get_response
 from eyetracker import get_trigger
 
+
+blocks = create_blocks(16, "CLCL")
+print(blocks)
+
+# stop here
+import sys 
+
+sys.exit()
+
 # Get participant details and save in same file as before
 old_participants = pd.read_csv(
     rf"C:\Users\annav\Documents\Jottacloud\Neuroscience PhD\Experiments\Vidi experiments\Data\Vidi3 - location-by-colour\test\participantinfo.csv",
@@ -29,11 +38,6 @@ old_participants = pd.read_csv(
 )
 new_participants = get_participant_details(old_participants, True)
 
-
-# stop here
-import sys 
-
-sys.exit()
 
 monitor, directory = get_monitor_and_dir(True)
 settings = get_settings(monitor, directory)
