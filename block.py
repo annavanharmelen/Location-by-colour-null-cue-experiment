@@ -11,15 +11,25 @@ from trial import show_text
 from response import wait_for_key
 
 
-def create_blocks(n_blocks):
-    if n_blocks % 2 != 0:
-        raise Exception("Expected number of trials to be divisible by 2.")
+def create_blocks(n_blocks, block_order):
+    if n_blocks % 4 != 0:
+        raise Exception("Expected number of blocks to be divisible by 4.")
 
     # Generate equal distribution of probe forms over the blocks, but randomly order them
-    block_types = n_blocks // 2 * ["colour_probe"] + n_blocks // 2 * ["location_probe"]
-    random.shuffle(block_types)
+    block_types = list()
+    for block_type in block_order:
+        if block_type == "C":
+            block_types.extend(n_blocks // 4 * ["colour_probe"])
+        elif block_type == "L":
+            block_types.extend(n_blocks // 4 * ["location_probe"])
+        else:
+            raise Exception("Expected block_type of 'C' or 'L'.")
+        
+    # Do a quick checksum
+    if len(block_types) != n_blocks:
+        raise Exception("create_blocks() has created the wrong amount of blocks.")
 
-    # Save list of sets of block numbers (in order) + block types (shuffled)
+    # Save list of sets of block numbers (in order) + block types
     blocks = list(zip(range(1, n_blocks + 1), block_types))
 
     return blocks
@@ -46,11 +56,10 @@ def create_trial_list(n_trials):
 
     return trials
 
+
 def show_block_type(block_type, settings, eyetracker):
     show_text(
-        "Next: "
-        f"{'colour' if block_type == 'colour_probe' else 'location'}"
-        " block",
+        "Next: " f"{'colour' if block_type == 'colour_probe' else 'location'}" " block",
         settings["window"],
     )
     settings["window"].flip()
@@ -65,6 +74,7 @@ def show_block_type(block_type, settings, eyetracker):
         wait_for_key(["space"], settings["keyboard"])
 
     return False
+
 
 def block_break(current_block, n_blocks, settings, eyetracker):
     blocks_left = n_blocks - current_block

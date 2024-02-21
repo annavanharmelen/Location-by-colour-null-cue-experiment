@@ -55,7 +55,7 @@ def main():
             "trials_completed": str,
         },
     )
-    new_participants = get_participant_details(old_participants, testing)
+    new_participants, block_order = get_participant_details(old_participants, testing)
 
     # Initialise set-up
     settings = get_settings(monitor, directory)
@@ -86,7 +86,7 @@ def main():
     # Start experiment
     try:
         # Generate pseudo-random order of blocks
-        blocks = create_blocks(N_BLOCKS)
+        blocks = create_blocks(N_BLOCKS, block_order)
 
         for block_nr, block_type in (
             [(1, "colour_probe"), (2, "location_probe")] if testing else blocks
