@@ -15,7 +15,7 @@ def get_participant_details(existing_participants: pd.DataFrame, testing):
     participant = random.randint(10, 99)
     while participant in existing_participants.participant_number.tolist():
         participant = random.randint(10, 99)
-    
+
     print(f"Participant number: {participant}")
 
     if not testing:
@@ -35,13 +35,19 @@ def get_participant_details(existing_participants: pd.DataFrame, testing):
             total_orders.remove(item)
 
     random.shuffle(total_orders)
+    current_block_order = total_orders[0]
 
     # Add newly made participant
     new_participant = pd.DataFrame(
-        {"age": [age], "participant_number": [participant], "session_number": [session], "block_order": [total_orders[0]]}
+        {
+            "age": [age],
+            "participant_number": [participant],
+            "session_number": [session],
+            "block_order": [current_block_order],
+        }
     )
     all_participants = pd.concat(
         [existing_participants, new_participant], ignore_index=True
     )
 
-    return all_participants
+    return all_participants, current_block_order
