@@ -18,6 +18,7 @@ from practice import practice
 import datetime as dt
 from block import (
     create_blocks,
+    show_session_type,
     create_trial_list,
     show_block_type,
     block_break,
@@ -75,7 +76,7 @@ def main():
         eyelinker.start()
 
     # Practice until participant wants to stop
-    practice(settings)
+    practice("start", settings)
 
     # Initialise some stuff
     start_of_experiment = time()
@@ -91,10 +92,25 @@ def main():
         for block_nr, block_type in (
             [(1, "colour_probe"), (2, "location_probe")] if testing else blocks
         ):
+            # Show session info if beginning of session
+            if block_nr % 4 == 0:
+
+                # Show participant session type
+                calibrated = True
+                while calibrated:
+                    calibrated = show_session_type(
+                        block_type,
+                        settings,
+                        eyetracker=None if testing else eyelinker,
+                    )
+
+                # Run practice trials
+                practice(block_type, settings)
+
             # Pseudo-randomly create conditions and target locations (so they're weighted)
             trials_in_block = create_trial_list(8 if testing else TRIALS_PER_BLOCK)
 
-            # Show participant block type
+            # Remind participant of block type
             calibrated = True
             while calibrated:
                 calibrated = show_block_type(
