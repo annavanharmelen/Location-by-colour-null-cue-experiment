@@ -24,7 +24,7 @@ def create_blocks(n_blocks, block_order):
             block_types.extend(n_blocks // 4 * ["location_probe"])
         else:
             raise Exception("Expected block_type of 'C' or 'L'.")
-        
+
     # Do a quick checksum
     if len(block_types) != n_blocks:
         raise Exception("create_blocks() has created the wrong amount of blocks.")
@@ -55,6 +55,27 @@ def create_trial_list(n_trials):
     random.shuffle(trials)
 
     return trials
+
+
+def show_session_type(session_type, settings, eyetracker):
+    show_text(
+        "Next session: "
+        f"{'colour' if session_type == 'colour_probe' else 'location'}"
+        " blocks",
+        settings["window"],
+    )
+    settings["window"].flip()
+
+    if eyetracker:
+        keys = wait_for_key(["space", "c"], settings["keyboard"])
+        if "c" in keys:
+            eyetracker.calibrate()
+            eyetracker.start()
+            return True
+    else:
+        wait_for_key(["space"], settings["keyboard"])
+
+    return False
 
 
 def show_block_type(block_type, settings, eyetracker):
