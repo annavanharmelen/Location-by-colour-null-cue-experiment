@@ -15,13 +15,17 @@ from trial import generate_stimuli_characteristics, single_trial
 from block import create_blocks
 from response import get_response
 from eyetracker import get_trigger
+from practice import practice
 
 
-blocks = create_blocks(16, "CLCL")
-print(blocks)
+monitor, directory = get_monitor_and_dir(True)
+settings = get_settings(monitor, directory)
+
+practice("start", settings)
+
 
 # stop here
-import sys 
+import sys
 
 sys.exit()
 
@@ -37,10 +41,6 @@ old_participants = pd.read_csv(
     },
 )
 new_participants = get_participant_details(old_participants, True)
-
-
-monitor, directory = get_monitor_and_dir(True)
-settings = get_settings(monitor, directory)
 
 try:
     get_response("colour", 45, "#ff0000", "congruent", "left", settings, True, None)
