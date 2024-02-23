@@ -91,7 +91,6 @@ def create_location_cue(position, settings):
 
 def create_capture_cue_frame(cue_form, settings, colour=None, position=None):
     if cue_form == "colour_cue":
-        print(colour)
         create_fixation_dot(settings, colour)
     elif cue_form == "location_cue":
         create_location_cue(position, settings)
