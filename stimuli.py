@@ -15,24 +15,30 @@ BAR_SIZE = [0.7, 4]  # width, height
 PROBE_CUE_SIZE = 2  # radius of circle
 
 
+decentral_dot = fixation_dot = None
+
 def create_fixation_dot(settings, colour="#eaeaea"):
+    global decentral_dot, fixation_dot
 
     # Make fixation dot
-    decentral_dot = visual.Circle(
-        win=settings["window"],
-        units="pix",
-        radius=settings["deg2pix"](TOTAL_DOT_SIZE),
-        pos=(0, 0),
-        fillColor=colour,
-    )
-
-    fixation_dot = visual.Circle(
-        win=settings["window"],
-        units="pix",
-        radius=settings["deg2pix"](DOT_SIZE),
-        pos=(0, 0),
-        fillColor="#000000",
-    )
+    if decentral_dot is None:
+        decentral_dot = visual.Circle(
+            win=settings["window"],
+            units="pix",
+            radius=settings["deg2pix"](TOTAL_DOT_SIZE),
+            pos=(0, 0),
+            fillColor=colour,
+        )
+    decentral_dot.fillColor = colour;
+    
+    if fixation_dot is None:
+        fixation_dot = visual.Circle(
+            win=settings["window"],
+            units="pix",
+            radius=settings["deg2pix"](DOT_SIZE),
+            pos=(0, 0),
+            fillColor="#000000",
+        )
 
     decentral_dot.draw()
     fixation_dot.draw()
