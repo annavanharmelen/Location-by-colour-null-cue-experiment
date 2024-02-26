@@ -17,6 +17,7 @@ PROBE_CUE_SIZE = 2  # radius of circle
 
 decentral_dot = fixation_dot = None
 
+
 def create_fixation_dot(settings, colour="#eaeaea"):
     global decentral_dot, fixation_dot
 
@@ -29,8 +30,8 @@ def create_fixation_dot(settings, colour="#eaeaea"):
             pos=(0, 0),
             fillColor=colour,
         )
-    decentral_dot.fillColor = colour;
-    
+    decentral_dot.fillColor = colour
+
     if fixation_dot is None:
         fixation_dot = visual.Circle(
             win=settings["window"],
