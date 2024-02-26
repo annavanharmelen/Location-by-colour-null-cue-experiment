@@ -96,7 +96,7 @@ def single_trial(
 
     screens = [
         (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (ITI, lambda: create_fixation_dot(settings), None),
+        (ITI / 1000, lambda: create_fixation_dot(settings), None),
         (
             0.25,
             lambda: create_stimuli_frame(
