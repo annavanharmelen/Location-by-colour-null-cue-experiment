@@ -15,7 +15,7 @@ from stimuli import (
     create_fixation_dot,
     create_capture_cue_frame,
     create_stimuli_frame,
-    create_probe_cue_frame
+    create_probe_cue_frame,
 )
 from eyetracker import get_trigger
 import random
@@ -49,7 +49,7 @@ def generate_stimuli_characteristics(target_bar, congruency, cue_form):
         capture_location = "right" if target_bar == "left" else "left"
 
     return {
-        "ITI": random.randint(500, 800),
+        "ITI": random.randint(500, 800) / 1000,
         "stimuli_colours": stimuli_colours,
         "cue_form": cue_form,
         "capture_colour": capture_colour,
@@ -96,7 +96,7 @@ def single_trial(
 
     screens = [
         (0, lambda: 0 / 0, None),  # initial one to make life easier
-        (ITI / 1000, lambda: create_fixation_dot(settings), None),
+        (ITI, lambda: create_fixation_dot(settings), None),
         (
             0.25,
             lambda: create_stimuli_frame(
@@ -133,7 +133,9 @@ def single_trial(
     for index, (duration, _, frame) in enumerate(screens[:-1]):
         # Send trigger if not testing
         if not testing and frame:
-            trigger = get_trigger(frame, probe_form, cue_form, trial_condition, target_bar)
+            trigger = get_trigger(
+                frame, probe_form, cue_form, trial_condition, target_bar
+            )
             eyetracker.tracker.send_message(f"trig{trigger}")
 
         # Draw the next screen while showing the current one
@@ -142,7 +144,9 @@ def single_trial(
     # The for loop only draws the probe cue, never shows it
     # So show it here
     if not testing:
-        trigger = get_trigger("probe_cue_onset", probe_form, cue_form, trial_condition, target_bar)
+        trigger = get_trigger(
+            "probe_cue_onset", probe_form, cue_form, trial_condition, target_bar
+        )
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     settings["window"].flip()
@@ -160,7 +164,9 @@ def single_trial(
     )
 
     if not testing:
-        trigger = get_trigger("response_offset", probe_form, cue_form, trial_condition, target_bar)
+        trigger = get_trigger(
+            "response_offset", probe_form, cue_form, trial_condition, target_bar
+        )
         eyetracker.tracker.send_message(f"trig{trigger}")
 
     # Show performance
@@ -170,13 +176,17 @@ def single_trial(
     )
 
     if not testing:
-        trigger = get_trigger("feedback_onset", probe_form, cue_form, trial_condition, target_bar)
+        trigger = get_trigger(
+            "feedback_onset", probe_form, cue_form, trial_condition, target_bar
+        )
         eyetracker.tracker.send_message(f"trig{trigger}")
     settings["window"].flip()
     sleep(0.25)
 
     return {
-        "condition_code": get_trigger("just_code_please", probe_form, cue_form, trial_condition, target_bar),
+        "condition_code": get_trigger(
+            "just_code_please", probe_form, cue_form, trial_condition, target_bar
+        ),
         **response,
     }
 
