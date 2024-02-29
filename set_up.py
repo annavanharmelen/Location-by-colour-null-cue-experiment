@@ -21,7 +21,7 @@ def get_monitor_and_dir(testing: bool):
             "distance": 50,  # in cm
         }
 
-        directory = r"C:\Users\annav\Documents\Jottacloud\Neuroscience PhD\Experiments\Vidi experiments\Data\Vidi3 - location-by-colour\test"
+        directory = r"..\..\Data\Vidi3 - location-by-colour\test"
 
     else:
         # lab
