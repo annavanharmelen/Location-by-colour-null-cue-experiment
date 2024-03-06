@@ -88,11 +88,9 @@ def main():
         # Generate pseudo-random order of blocks
         blocks = create_blocks(N_BLOCKS, block_order)
 
-        for block_nr, block_type in (
-            [(1, "colour_probe"), (2, "location_probe")] if testing else blocks
-        ):
+        for block_nr, block_type in blocks:
             # Show session info if beginning of session
-            if block_nr % 4 == 0:
+            if block_nr % 4 == 1:
 
                 # Show participant session type
                 calibrated = True
