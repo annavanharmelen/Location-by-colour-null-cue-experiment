@@ -32,7 +32,7 @@ def get_monitor_and_dir(testing: bool):
             "distance": 70,  # in cm
         }
 
-        directory = r"C:\Users\Anna_vidi\Desktop\Location-by-colour data"
+        directory = r"C:\Users\vidi_asa\Desktop\Location-by-colour data"
     
     return monitor, directory
 
