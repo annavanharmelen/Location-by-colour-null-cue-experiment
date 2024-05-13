@@ -28,14 +28,15 @@ def get_participant_details(existing_participants: pd.DataFrame, testing):
     session = max(existing_participants.session_number) + 1
 
     # Determine block order
-    total_orders = 6 * ["CLCL"] + 6 * ["CLLC"] + 6 * ["LCLC"] + 6 * ["LCCL"]
+    # total_orders = 6 * ["CLCL"] + 6 * ["CLLC"] + 6 * ["LCLC"] + 6 * ["LCCL"]
 
-    for item in existing_participants.block_order.tolist():
-        if item in total_orders:
-            total_orders.remove(item)
+    # for item in existing_participants.block_order.tolist():
+    #     if item in total_orders:
+    #         total_orders.remove(item)
 
-    random.shuffle(total_orders)
-    current_block_order = total_orders[0]
+    # random.shuffle(total_orders)
+    # current_block_order = total_orders[0]
+    current_block_order = ["LCLC"] # CHANGE ME
 
     # Add newly made participant
     new_participant = pd.DataFrame(
