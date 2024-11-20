@@ -48,7 +48,7 @@ def create_trial_list(n_trials):
 
     # Generate equal distribution of cue forms,
     # that co-occur equally with both target locations and directions
-    cue_forms = 4 * (n_trials // 8 * ["colour_cue"] + n_trials // 8 * ["location_cue"])
+    cue_forms = n_trials * ["colour_cue"]
 
     # Create trial parameters for all trials
     trials = list(zip(locations, congruencies, cue_forms))
